@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Checkout - ShopEasy{% endblock %}
+{% block content %}
+<h1>Checkout</h1>
+<div class="checkout-wrap">
+    <form method="post" class="form-box">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Place Order</button>
+    </form>
+    <div class="order-summary">
+        <h3>Order Summary</h3>
+        {% for item in cart.items.all %}
+            <p>{{ item.product.name }} x {{ item.quantity }} — ₹{{ item.subtotal }}</p>
+        {% endfor %}
+        <p class="cart-total">Total: ₹{{ cart.total_price }}</p>
+    </div>
+</div>
+{% endblock %}

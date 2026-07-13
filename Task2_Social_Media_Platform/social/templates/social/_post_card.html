@@ -1,0 +1,22 @@
+{% load social_extras %}
+<div class="post-card">
+    <div class="post-header">
+        <a href="{% url 'profile' post.author.username %}"><strong>{{ post.author.username }}</strong></a>
+        <span class="post-time">{{ post.created_at|timesince }} ago</span>
+    </div>
+    <p class="post-content">{{ post.content }}</p>
+    {% if post.image %}
+        <img src="{{ post.image.url }}" class="post-image" alt="post image">
+    {% endif %}
+    <div class="post-actions">
+        {% with liked=post|is_liked_by:user %}
+        <a href="{% url 'toggle_like' post.id %}" class="{% if liked %}liked{% endif %}">
+            {% if liked %}Liked{% else %}Like{% endif %} ({{ post.like_count }})
+        </a>
+        {% endwith %}
+        <a href="{% url 'post_detail' post.id %}">Comments ({{ post.comment_count }})</a>
+        {% if post.author == user %}
+            <a href="{% url 'delete_post' post.id %}" class="delete-link" onclick="return confirm('Delete this post?')">Delete</a>
+        {% endif %}
+    </div>
+</div>

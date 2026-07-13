@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ShopEasy{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <a href="{% url 'home' %}" class="logo">ShopEasy</a>
+        <form method="get" action="{% url 'home' %}" class="search-form">
+            <input type="text" name="q" placeholder="Search products..." value="{{ query }}">
+            <button type="submit">Search</button>
+        </form>
+        <nav>
+            {% if user.is_authenticated %}
+                <a href="{% url 'cart' %}">Cart ({{ cart_count }})</a>
+                <a href="{% url 'order_history' %}">My Orders</a>
+                <span class="hello">Hi, {{ user.username }}</span>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>Built for CodeAlpha internship - Full Stack Development Task 1</p>
+    </footer>
+</body>
+</html>

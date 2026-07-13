@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Register - Connectly{% endblock %}
+{% block content %}
+<div class="form-box">
+    <h2>Join Connectly</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Register</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</div>
+{% endblock %}

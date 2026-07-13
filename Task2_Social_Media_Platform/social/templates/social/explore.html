@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Explore - Connectly{% endblock %}
+{% block content %}
+<h2>Explore</h2>
+{% for post in posts %}
+    {% include "social/_post_card.html" %}
+{% empty %}
+    <p>Nothing to see here yet.</p>
+{% endfor %}
+{% endblock %}

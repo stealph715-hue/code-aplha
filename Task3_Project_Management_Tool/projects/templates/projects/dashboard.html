@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - TaskBoard{% endblock %}
+{% block content %}
+<h1>Your Projects</h1>
+
+<div class="project-grid">
+    {% for project in projects %}
+    <a href="{% url 'project_board' project.id %}" class="project-card">
+        <h3>{{ project.name }}</h3>
+        <p>{{ project.description|truncatechars:80 }}</p>
+        <p class="progress-text">{{ project.done_count }} / {{ project.task_count }} tasks done</p>
+    </a>
+    {% empty %}
+        <p>You're not part of any projects yet. Create one below.</p>
+    {% endfor %}
+</div>
+
+<div class="form-box">
+    <h2>Create a new project</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Create Project</button>
+    </form>
+</div>
+{% endblock %}

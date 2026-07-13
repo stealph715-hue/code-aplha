@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ profile_user.username }} - Connectly{% endblock %}
+{% block content %}
+<div class="profile-header">
+    {% if profile_user.profile.avatar %}
+        <img src="{{ profile_user.profile.avatar.url }}" class="avatar" alt="avatar">
+    {% else %}
+        <div class="avatar-placeholder">{{ profile_user.username|first|upper }}</div>
+    {% endif %}
+    <div>
+        <h2>{{ profile_user.username }}</h2>
+        <p>{{ profile_user.profile.bio }}</p>
+        <p class="follow-stats">
+            {{ profile_user.profile.followers_count }} followers ·
+            {{ profile_user.profile.following_count }} following
+        </p>
+        {% if profile_user == user %}
+            <a href="{% url 'edit_profile' %}" class="btn">Edit Profile</a>
+        {% else %}
+            <a href="{% url 'toggle_follow' profile_user.username %}" class="btn">
+                {% if is_following %}Unfollow{% else %}Follow{% endif %}
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+<h3>Posts</h3>
+{% for post in posts %}
+    {% include "social/_post_card.html" %}
+{% empty %}
+    <p>No posts yet.</p>
+{% endfor %}
+{% endblock %}

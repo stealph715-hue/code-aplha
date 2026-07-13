@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}My Orders - ShopEasy{% endblock %}
+{% block content %}
+<h1>My Orders</h1>
+{% if orders %}
+    {% for order in orders %}
+    <div class="order-card">
+        <p><strong>Order #{{ order.id }}</strong> — {{ order.status|title }} — {{ order.created_at|date:"d M Y" }}</p>
+        <ul>
+            {% for item in order.items.all %}
+                <li>{{ item.product.name }} x {{ item.quantity }} — ₹{{ item.subtotal }}</li>
+            {% endfor %}
+        </ul>
+        <p>Total: ₹{{ order.total_price }}</p>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>You haven't placed any orders yet.</p>
+{% endif %}
+{% endblock %}

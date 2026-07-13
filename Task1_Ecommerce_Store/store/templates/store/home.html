@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Home - ShopEasy{% endblock %}
+{% block content %}
+<div class="filters">
+    <a href="{% url 'home' %}" class="{% if not active_category %}active{% endif %}">All</a>
+    {% for cat in categories %}
+        <a href="?category={{ cat.slug }}" class="{% if active_category == cat.slug %}active{% endif %}">{{ cat.name }}</a>
+    {% endfor %}
+</div>
+
+<div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <a href="{{ product.get_absolute_url }}">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <div class="no-image">No image</div>
+            {% endif %}
+            <h3>{{ product.name }}</h3>
+        </a>
+        <p class="price">₹{{ product.price }}</p>
+        {% if product.in_stock %}
+            <span class="in-stock">In stock</span>
+        {% else %}
+            <span class="out-stock">Out of stock</span>
+        {% endif %}
+    </div>
+    {% empty %}
+        <p>No products found.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Connectly{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'social/css/style.css' %}">
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <header class="navbar">
+        <a href="{% url 'feed' %}" class="logo">Connectly</a>
+        <nav>
+            <a href="{% url 'feed' %}">Feed</a>
+            <a href="{% url 'explore' %}">Explore</a>
+            <a href="{% url 'profile' user.username %}">My Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </nav>
+    </header>
+    {% endif %}
+
+    <main class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>Built for CodeAlpha internship - Full Stack Development Task 2</p>
+    </footer>
+</body>
+</html>

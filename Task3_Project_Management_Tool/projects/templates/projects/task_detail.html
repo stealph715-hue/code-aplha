@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ task.title }} - TaskBoard{% endblock %}
+{% block content %}
+<a href="{% url 'project_board' task.project.id %}">&larr; Back to board</a>
+<h1>{{ task.title }}</h1>
+<p>{{ task.description }}</p>
+<p><strong>Status:</strong> {{ task.get_status_display }}</p>
+{% if task.assigned_to %}<p><strong>Assigned to:</strong> {{ task.assigned_to.username }}</p>{% endif %}
+{% if task.due_date %}<p><strong>Due:</strong> {{ task.due_date }}</p>{% endif %}
+
+<h3>Comments</h3>
+{% for comment in comments %}
+    <div class="comment">
+        <strong>{{ comment.author.username }}</strong>: {{ comment.text }}
+        <span class="comment-time">{{ comment.created_at|timesince }} ago</span>
+    </div>
+{% empty %}
+    <p>No comments yet.</p>
+{% endfor %}
+
+<form method="post" class="form-box">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Add Comment</button>
+</form>
+{% endblock %}

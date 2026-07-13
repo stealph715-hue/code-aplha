@@ -1,0 +1,15 @@
+<div class="task-card" data-task-id="{{ task.id }}">
+    <a href="{% url 'task_detail' task.id %}"><strong>{{ task.title }}</strong></a>
+    {% if task.assigned_to %}
+        <p class="assignee">Assigned: {{ task.assigned_to.username }}</p>
+    {% endif %}
+    {% if task.due_date %}
+        <p class="due-date">Due: {{ task.due_date }}</p>
+    {% endif %}
+    <p class="comment-count">{{ task.comment_count }} comment{{ task.comment_count|pluralize }}</p>
+    <select class="status-select" onchange="updateTaskStatus({{ task.id }}, this.value)">
+        <option value="todo" {% if task.status == 'todo' %}selected{% endif %}>To Do</option>
+        <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+        <option value="done" {% if task.status == 'done' %}selected{% endif %}>Done</option>
+    </select>
+</div>

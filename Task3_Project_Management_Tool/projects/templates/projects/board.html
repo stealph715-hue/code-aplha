@@ -1,0 +1,46 @@
+{% load static %}
+{% extends "base.html" %}
+{% block title %}{{ project.name }} - TaskBoard{% endblock %}
+{% block content %}
+<div class="board-header">
+    <div>
+        <h1>{{ project.name }}</h1>
+        <p>{{ project.description }}</p>
+    </div>
+    {% if project.owner == user %}
+    <form method="post" action="{% url 'add_member' project.id %}" class="add-member-form">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Add member by username">
+        <button type="submit" class="btn small">Add</button>
+    </form>
+    {% endif %}
+</div>
+
+<div class="form-box">
+    <h3>New Task</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Add Task</button>
+    </form>
+</div>
+
+<div class="board">
+    <div class="board-column" data-status="todo">
+        <h3>To Do</h3>
+        {% for task in columns.todo %}{% include "projects/_task_card.html" %}{% endfor %}
+    </div>
+    <div class="board-column" data-status="in_progress">
+        <h3>In Progress</h3>
+        {% for task in columns.in_progress %}{% include "projects/_task_card.html" %}{% endfor %}
+    </div>
+    <div class="board-column" data-status="done">
+        <h3>Done</h3>
+        {% for task in columns.done %}{% include "projects/_task_card.html" %}{% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'projects/js/board.js' %}"></script>
+{% endblock %}

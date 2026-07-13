@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Feed - Connectly{% endblock %}
+{% block content %}
+<div class="form-box new-post-box">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Post</button>
+    </form>
+</div>
+
+<h2>Your Feed</h2>
+{% for post in posts %}
+    {% include "social/_post_card.html" %}
+{% empty %}
+    <p>No posts yet. Follow people from the <a href="{% url 'explore' %}">Explore</a> page, or make your first post above.</p>
+{% endfor %}
+{% endblock %}
